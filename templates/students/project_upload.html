@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+{% include 'students/navbar.html' %}
+<style>
+   label {
+  color: black;
+  padding: 8px;
+  background-color: #e7e7e7; color: black;
+}
+
+  input {
+  width: 100%;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  font-size: 16px;
+}
+
+  textarea {
+  width: 100%;
+  height: 150px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  font-size: 16px;
+  resize: none;
+}
+</style>
+</style>
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title"> Upload your project content and file </h5>    
+    <h4>  </h4>    
+  </div>
+</div> 
+<br><br>
+{% for message in messages %}
+<div class="container-fluid p-0">
+  <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
+    <button onClick="window.location.href=window.location.href" type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="True">&times;</span>
+    </button>
+    {{ message }}
+  </div>
+</div>
+{% endfor %}
+<small> *Your upload is automatically on 'pending' till your supervisor approves it or declines it.</small>    
+  <br><br><br>
+  <div class="rounded border border-3 p-3" style="background-color: rgba(241, 236, 236, 0.89);">
+    <div class="col-md-6 col-sm-8 col-12">
+      <form class="form-control" method="post"  enctype="multipart/form-data" >
+        {% csrf_token %}
+        {{ form|crispy }}
+        <br>
+        <button type="submit" class="btn btn-success">Save</button>
+        <a href="" class="btn btn-outline-secondary" role="button">Nevermind</a>
+        
+      </form>
+    </div>
+  </div>
+
+{% endblock %}

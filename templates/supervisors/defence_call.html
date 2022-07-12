@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<style>
+  .form-control{
+    width: auto;
+  }
+</style>
+
+
+
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Defence request </h5>                    
+  </div>
+</div>
+
+<br><br>
+<table class="table align-middle mb-0 bg-white"> 
+  {% for message in messages %}
+  <div class="container-fluid p-0">
+    <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
+      <button onClick="window.location.href=window.location.href" type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="True">&times;</span>
+      </button>
+      {{ message }}
+    </div>
+  </div>
+  {% endfor %}
+  <thead class="bg-light">
+    <tr>
+      <th>Title</th>
+      <th>Status</th>          
+    </tr>
+    {% for i in object_list %}   
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        <div class="d-flex align-items-center">
+          <img
+              src="/media/{{i.student.user.profile_pix}}"
+              alt=""
+              style="width: 45px; height: 45px"
+              class="rounded-circle"
+              />
+          <div class="ms-3">
+            <div class="p-3 me-3 border" style="border-radius: 15px; background-color: #fbfbfb;">
+            <p class="fw-bold mb-1">{{i.detail}} </p>  
+            
+
+            {% if i.status == 'approved' %}
+            <br>          
+            <form action="{% url 'defence_call_supervisor' i.pk %}" method="post">
+              {% csrf_token %}                                                  
+              <input type="hidden" name="student_id" value="{{student}}">
+              <select onclick="this.form.submit()"  class="form-control" name="status" class="form-select" aria-label="Default select example" >                
+                <!-- <option value="approved">approved</option>  -->
+                <option value="closed">close</option>                         
+              </select>              
+            </form>
+            <br>
+            {% endif %}
+
+            <br>          
+            {% if i.status == 'closed' %}
+            <form action="{% url 'defence_call_supervisor' i.pk %}" method="post">
+              {% csrf_token %}                                                  
+              <input type="hidden" name="student_id" value="{{student}}">
+              <select onclick="this.form.submit()"  class="form-control" name="status" class="form-select" aria-label="Default select example" >                
+                <option value="approved">approve</option> 
+                <!-- <option value="closed">close</option>                          -->
+              </select>              
+            </form>
+            <br>
+            {% endif %}
+
+            {% if i.status == 'pending' %}
+            <form action="{% url 'defence_call_supervisor' i.pk %}" method="post">
+              {% csrf_token %}                                                  
+              <input type="hidden" name="student_id" value="{{student}}">
+              <select onclick="this.form.submit()"  class="form-control" name="status" class="form-select" aria-label="Default select example" >                
+                <option value="approved">approve</option> 
+                <!-- <option value="closed">close</option>                          -->
+              </select>              
+            </form>
+            <form action="{% url 'defence_call_supervisor' i.pk %}" method="post">
+              {% csrf_token %}                                                  
+              <input type="hidden" name="student_id" value="{{student}}">
+              <select onclick="this.form.submit()"  class="form-control" name="status" class="form-select" aria-label="Default select example" >                
+                <option value="closed">close</option> 
+                <!-- <option value="closed">close</option>                          -->
+              </select>              
+            </form>
+            {% endif %}
+            <br>
+
+          </div>
+          </div>
+        </div>
+      </td>
+      <td>
+        {% if i.status == 'approved' %}
+        <p class="fw-normal mb-1"> <img height="20px" src="{% static 'img/verified.svg' %}" alt="vverified"> {{i.status}}</p>
+        {% endif %}
+        {% if i.status == 'closed' %}
+        <p class="fw-normal mb-1"> <img height="20px" src="{% static 'img/declined.svg' %}" alt="closed"> {{i.status}}</p>
+        {% endif %}
+        {% if i.status == 'pending' %}
+        <p class="fw-normal mb-1"> <img height="20px" src="{% static 'img/unverified.svg' %}" alt="vverified"> {{i.status}}</p>
+        {% endif %}      
+        <p class="text-muted mb-0">{{i.type}}</p>          
+        <!-- <p class="text-muted mb-0">IT department</p> -->
+      </td>
+      
+    </tr>
+    {% endfor %}
+  </tbody>
+  
+</table>
+
+<br>
+<div>
+  <div>
+    <!-- <div class="card text-center">
+      <div class="card-body">
+        <form action="{% url 'defence_call' %}" method="post">
+          {% csrf_token %}
+          
+          <label >Defence call note to supervisor</label><br>
+          <input class="form-control" type="Text"  />
+                   
+          <br>
+          <select  class="form-control" name="type" id="type" >
+            <option value=""> select type</option>
+            <option value="mid_term">Mid-term</option>
+            <option value="final">Final</option>             
+          </select>
+                
+          <br><br>
+          <button type="submit" class="btn btn-success">Submit request</button>
+        </form>
+      </div>     
+    </div>
+        -->
+    <br><br><br><br><br>
+
+  </div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+{% endblock %}

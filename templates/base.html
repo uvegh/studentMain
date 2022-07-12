@@ -1,0 +1,127 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}FYP Management System{% endblock %}</title>
+    <link rel="icon" href="{% static 'img/favicon.png' %}">
+    <link href="https://fonts.googleapis.com/css?family=Clicker+Script" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'vendor/fontello-2f186091/css/fontello.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/app.css' %}">
+    <script src="{% static 'fontawesome/js/all.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
+    {% if user.is_authenticated and user.is_supervisor %}
+      <link rel="stylesheet" type="text/css" href="{% static 'css/supervisor.css' %}">
+    {% else %}
+      <link rel="stylesheet" type="text/css" href="{% static 'css/students.css' %}">
+    {% endif %}
+    {% block css %}
+    {% endblock %}
+  </head>
+  <body>
+    <style>
+      body {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+    </style>
+    
+    {% comment %} <a href=""><img style="position: absolute; top: 0; right: 0; border: 0;" 
+    src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" 
+    alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a> {% endcomment %}
+    <div class="container my-4">
+      <div class="row justify-content-center">
+        <div class="col-md-10 col-sm-12">
+          <div class="row">
+           
+           
+            <div class="col-6 text-right">
+            
+                <p class="pt-3">
+               
+                    
+                </p>
+             
+            </div>
+          </div>
+          <div class="card mb-3">
+            
+            <div class="card-body">
+              
+                <div class="alert" role="alert">
+                
+                </div>
+              
+
+              <div class="">
+                <h1 class="logo" style="text-align: center; font-size:50px;">
+                  <a href="{% url 'home' %}" >
+                    Final Year Project Management Portal
+                    {% if user.is_authenticated %}
+                      {% if user.is_supervisor %}
+                      <br>
+                        <span class="icon-feather" data-toggle="tooltip" data-placement="right" title="Teacher profile"></span>
+                      {% else %}
+                      <br>
+                        <span class="icon-graduation-cap" data-toggle="tooltip" data-placement="right" title="Student profile"></span>
+                      {% endif %}
+                    {% endif %}
+                  </a>
+                </h1>
+              </div>
+             
+              
+
+              {% if user.is_authenticated %}
+              {% if user.is_supervisor %}
+              <!-- <nav class="navbar navbar-light bg-light">
+                <div class="container-fluid">
+                  <a class="navbar-brand" href="#">
+                    <span class="icon-graduation-cap" data-toggle="tooltip" data-placement="right" title="Student profile"></span>
+                    FYP Portal
+                  </a>
+                  <ul class="nav nav-tabs mb-3">
+                    <li class="nav-item">
+                      <a class="nav-link" href="">Message</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="">Defence call</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="">Meeting</a>
+                    </li>
+                  </ul>
+                </div>
+              </nav> -->
+              {% endif %}
+              {% endif %}
+
+              {% block content %}
+              {% endblock %}
+            </div>
+           
+          </div>
+          <footer>
+               <div class="card text-center p-3">
+                <span>
+                  Student Project Management Portal (2022)
+                </span>
+               </div>
+          </footer>
+        </div>
+      </div>
+    </div>
+    <!-- <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+      })
+    </script> -->
+    {% block js %}
+    {% endblock %}
+    
+  </body>
+</html>

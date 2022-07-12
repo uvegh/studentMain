@@ -1,0 +1,6 @@
+asgiref==3.5.2
+Django==3.1.7
+django-crispy-forms==1.14.0
+fontawesome==5.10.1.post1
+pytz==2022.1
+sqlparse==0.4.2

@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+{% if project.id %}
+{% include 'students/navbar.html' %}
+{% endif%}
+<br><br>
+<a class="btn btn-outline-danger" href="/accounts/logout" style="color: red; align-items: right;" > logout </a> <br><br>
+
+<div class="card rounded-top border border-1 p-3">
+
+  {% for n in notice %}    
+    <div class="alert alert-primary alert-dismissible fade show" role="alert">
+      <strong></strong>{{ n.notice|safe }}.
+      <form action="{% url 'read_true' n.pk %}" method="post">
+        {% csrf_token %}                                                  
+        <input type="hidden" name="student_id" value="{{object.student.user.id}}">
+        <button type="submit" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>  
+      </form>
+      
+    </div>
+  {% endfor %}  
+
+  <div class="card-header">
+    Student Dashboard 
+  </div>
+  
+      {% if project.id %}
+      <p style="color: Blue ;" class="text-center">Project Status: {{project.status}}</p>
+      {% else %}
+      <p style="color: red;" class="text-center" > NO SUPERVISOR YET</p>
+      {% endif %}
+
+    
+  <div class="card-body">
+    {% if project.id %}
+    <div class="text-center">
+      <img src="/media/{{project.student.user.profile_pix}}" class="rounded-circle z-depth-2" alt="" height="200px" width="200px">
+    </div>
+    <br><br> <img height="50px" src="{% static 'img/folder.svg' %}" alt="title">
+    <h5 class="card-title">Project Topic: {{ project }}</h5>    
+    <p class="lead">Full name: {{ project.student.user.first_name }}&nbsp; {{ project.student.user.last_name }}
+     <br> Institution: {{ project.student.user.institution }}
+     <br> Department: {{ project.student.user.department }}
+     <br> State of origin: {{ project.student.user.state_of_origin }}
+     <br> Date of birth: {{ project.student.user.date_of_birth }}
+     <br> Project Supervisor: {{ project.supervisor }}
+
+    </p>
+    <p class="lead"></p>
+    <p class="lead"></p>
+    <p class="lead"></p>
+    <p class="lead"></p>
+    <p class="lead"></p>
+    <!-- <p class="card-text">Project Student: {{ project.student }}</p> -->
+    <small> Project ID: {{project.id}} </small>
+    {% endif %}
+  </div>  
+</div>
+     
+    
+
+<br><br><br><br><br><br>    
+  
+{% if project.id %}
+  <h3 class="text-center" >Uploaded Projects <br><br>   
+    <a href="{% url 'project_upload' %}" class="btn btn-success">Upload new project content</a>
+  {% endif %}
+
+</h3>
+
+<br>
+<a href="#" id="uploadedprojects" ></a>{% if project_uploads %}
+<table class="table align-middle mb-0 bg-white">
+  <thead class="bg-light">
+    <tr>
+      <th>Title</th>
+      <th>Status</th>     
+    </tr>
+  </thead>
+  <tbody>
+    
+    {% for i in project_uploads %}       
+    <tr>
+      <td>
+        <div class="d-flex align-items-center">
+          <img
+              src="/media/{{i.student.user.profile_pix}}"
+              alt=""
+              style="width: 45px; height: 45px"
+              class="rounded-circle"
+              />
+          <div class="ms-3">
+            <p class="fw-bold mb-1"><a href="{%  url 'project_upload_detail' i.pk %}"> {{i.title}} </a></p>
+            <p class="text-muted mb-0">{{ project.title }}</p>
+            <p class="text-muted mb-0"><small>{{i.created_on}}</small></p>
+          </div>
+        </div>
+      </td>
+      <td>
+        {% if i.status == 'approved' %}
+        <p class="fw-normal mb-1" style="color: green;"> <img height="20px" src="{% static 'img/done.svg' %}" alt=""> {{i.status}} </p>
+        <!-- <p class="text-muted mb-0">IT department</p> -->
+        {% endif %}
+
+        {% if i.status == 'declined' %}
+        <p class="fw-normal mb-1" style="color: red;"> <img height="20px" src="{% static 'img/declined1.svg' %}" alt=""> {{i.status}} </p>
+        <!-- <p class="text-muted mb-0">IT department</p> -->
+        {% endif %}
+
+        {% if i.status == 'pending' %}
+        <p class="fw-normal mb-1" style="color: blue;"> <img height="20px" src="{% static 'img/pending.svg' %}" alt=""> {{i.status}} </p>
+        <!-- <p class="text-muted mb-0">IT department</p> -->
+        {% endif %}
+         
+      </td>
+     
+    </tr>
+    {% endfor %}
+  {% endif  %}
+  </tbody>
+</table>
+
+{% endblock %}
+
+{% block js %}
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+{% endblock %}

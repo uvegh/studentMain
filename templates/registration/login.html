@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="card rounded-top border border-1 p-3 text-center">
+  <div class="rounded border border-3 p-3" style="background-color: rgba(255, 255, 255, 0.808);">
+  <p>
+    <a class="btn btn-success" href="/accounts/signup"> Sign Up as a Student</a>
+  </p>
+  <p>
+    <a class="btn btn-primary" href="/supervisor/accounts/signup"> Sign Up as a Supervisor</a>
+  </p>
+
+
+  <br><br>
+  {% if form.non_field_errors %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      {% for error in form.non_field_errors %}
+        <p{% if forloop.last %} class="mb-0"{% endif %}>{{ error }}</p>
+      {% endfor %}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  {% endif %}
+  
+      <h2>Log in to Project Management Portal</h2> <br>
+      <form method="post" novalidate>
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}">
+        {{ form.username|as_crispy_field }} <br>
+        {{ form.password|as_crispy_field }}
+        <br>
+        <button type="submit" class="btn btn-primary">Log in</button>
+      </form>
+    
+  </div>
+  </div>  
+
+{% endblock %}

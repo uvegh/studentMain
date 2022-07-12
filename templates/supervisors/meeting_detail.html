@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+{% load static %}
+  <style>
+    .form-control{
+      width: auto;
+    }
+  </style>
+
+  
+  
+  <div class="p-4 shadow-4 rounded-3" >
+
+    <div class="rounded border p-2">
+      <br>
+      <h3><img height="50px" src="{% static 'img/smartphone.svg' %}" alt="title"> {{ object.title }}</h3> 
+      <h6><img height="50px" src="{% static 'img/event.svg' %}" alt="datetime"> {{object.datetime}}</h6>      
+      <p> <img height="50px" src="{% static 'img/todo.svg' %}" alt="todo">{{ object.detail }} </p>
+      </div>
+       
+  </div>
+  {% for message in messages %}
+  <div class="container-fluid p-0">
+    <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
+      <button onClick="window.location.href=window.location.href" type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="True">&times;</span>
+      </button>
+      {{ message }}
+    </div>
+  </div>
+  {% endfor %}
+    <div class="rounded-top border border-1 p-3" >
+      <img height="50px" src="{% static 'img/list.svg' %}" alt="title"> &nbsp;
+      <small>Meeting minutes from project student</small> <br><br>
+        {% for comment in comments %}
+          
+      <div class="rounded border border-1 p-3" style="background-color: rgba(228, 205, 205, 0.808);">
+      
+      <!-- {% if comment.user.is_student %}
+        <b style="color: green;">{{ comment.user }}:</b>  
+      {% endif  %}        
+      
+      {% if comment.user.is_supervisor %}
+      <b style="color: rgb(34, 0, 128);">{{ comment.user }}:</b>  
+      {% endif  %}  -->
+        
+      <small>{{ comment.created_on|timesince }} ago</small>
+
+      <br><br>
+      <p>{{ comment.comment }}</p>        
+      <hr>
+      
+      {% if comment.verification_status == "verified" %}
+      <p><img height="20px" src="{% static 'img/verified.svg' %}" alt="vverified"> &nbsp; {{ comment.verification_status }} </p>
+      {% endif %}
+
+      {% if comment.verification_status == "unverified" %}
+      <p><img height="20px" src="{% static 'img/unverified.svg' %}" alt="vverified"> &nbsp; {{ comment.verification_status }} </p>
+      {% endif %}
+    
+
+
+        {%if  comment.verification_status == 'verified' %}
+        
+        <form action="{% url 'meeting_update_supervisor' comment.pk %}" method="post">
+          {% csrf_token %}                                                  
+          <input type="hidden" name="student_id" value="{{student}}">
+          <select onclick="this.form.submit()"  class="form-control" name="verification_status" class="form-select" aria-label="Default select example" >
+            <option value="unverified">Mark as Unverified</option> 
+          </select>              
+        </form>
+        
+            {% else %}
+          <form action="{% url 'meeting_update_supervisor' comment.pk %}" method="post">
+            {% csrf_token %}                                                  
+            <input type="hidden" name="student_id" value="{{student}}">
+            <select onclick="this.form.submit()"  class="form-control" name="verification_status" class="form-select" aria-label="Default select example" >
+            <option value="verified">Mark as verified</option>                         
+          </select>              
+        </form>
+
+        {% endif %}     
+        </div>  
+        <br>
+    {% endfor %}
+
+  </div>
+
+
+  
+{% endblock %}

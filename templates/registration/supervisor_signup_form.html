@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+
+
+<div class="card rounded-top border border-1 p-3">
+  <div class="rounded border border-3 p-3" style="background-color: rgba(255, 255, 255, 0.808);">
+      <h2>Sign up as a {{ user_type }}</h2>
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}">
+        {{ form|crispy }}
+        <br>
+        <button type="submit" class="btn btn-success">Sign up</button>
+      </form>
+    </div>
+  </div>
+
+  
+{% endblock %}
+
+

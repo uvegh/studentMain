@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+<style>
+  
+  label {
+  color: black;
+  padding: 8px;
+  background-color: #e7e7e7; color: black;
+}
+
+textarea {
+  width: 100%;
+  height: 150px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  font-size: 16px;
+  resize: none;
+
+}
+</style>
+
+{% include 'students/navbar.html' %}
+
+  <br><h2 class="text-center"> <p> Project Topic: {{ project.title }}</p>  </h2><br>
+  
+  {% for message in messages %}
+<div class="container-fluid p-0">
+  <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
+    <button onClick="window.location.href=window.location.href" type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="True">&times;</span>
+    </button>
+    {{ message }}
+  </div>
+</div>
+{% endfor %}
+
+  <div class="shadow-4 rounded-3">
+    <div class="rounded-top border border-1 p-3 text-center">
+     
+        <h1>
+            {{ object.title }}
+        </h1> <br>
+        <p>
+            {{ object.detail }}
+        </p>
+  
+        <p> {% if object.file %}
+         Document: <a href="{{object.file.url }}"> {{ object.file }} </a>          
+          {% endif %}
+        </p>
+        <p> {% if object.file2 %}
+          Document: <a href="{{object.file2.url }}"> {{ object.file2 }} </a>          
+          {% endif %}
+        </p>
+
+        <br><br>
+        <div class="rounded border border-2 p-1" style="background-color: rgba(151, 107, 107, 0.808);"><br>
+          {% if object.status == 'approved' %}
+          <small> <img height="30px" src="{% static 'img/verified.svg' %}" alt="vverified"> {{ object.status }}</small>
+          {% endif %}
+
+          {% if object.status == 'pending' %}
+          <small> <img height="30px" src="{% static 'img/unverified.svg' %}" alt="vverified"> {{ object.status }}</small>
+          {% endif %}
+
+          {% if object.status == 'declined' %}
+          <small> <img height="30px" src="{% static 'img/declined.svg' %}" alt="vverified"> {{ object.status }}</small>
+          {% endif %}
+                <br>
+        <p> Supervisor: {{ project.supervisor }}</p>       
+        <br> 
+        </div>
+    </div>
+    <br>
+    <div class="rounded border border-3 p-3" style="background-color: rgba(228, 205, 205, 0.808);">
+      {% for comment in comments %}
+      {% if comment.user.is_student %}
+        <b style="color: green;">{{ comment.user }}:</b>  
+      {% endif  %}        
+      
+      {% if comment.user.is_supervisor %}
+      <b style="color: rgb(34, 0, 128);">{{ comment.user }}:</b>  
+      {% endif  %}      
+
+        <small>{{ comment.created_on|timesince }} ago</small>
+        <br>
+        <p > {{ comment.comment }}</p>
+        <br><br>
+        <hr>
+    {% empty %}
+        <p>Feel free to leave the first comment!</p>
+    {% endfor %}
+
+    <small> Write review or comment </small>
+    <form class="form-control" method="post" action="{% url 'project_upload_detail' object.pk %}">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-success"> send </button>
+        <a href="" class="btn btn-outline-secondary" role="button">Nevermind</a>
+       
+      </form>
+    </div>      
+
+  </div>
+{% endblock %}

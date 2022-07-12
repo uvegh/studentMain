@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">{{ student_name }} project uploads </h5>                
+    <p>  </p>
+  </div>
+</div>
+
+<br>
+<div class="rounded border border-1 p-3" style="background-color: hsl(0, 0%, 94%);">
+  <div>
+    
+
+        <!-- <a href="{% url 'defence_call' %}"> Create Message</a>       -->        
+          <!-- <form action="{% url 'meeting_create' %}" method="post">
+            {% csrf_token %}
+            <label for="title"> Title </label>
+            <input type="text" name="title" />
+              <br><br>
+            <label for="detail"> Detail </label>
+            <input type="text" name="detail" />
+
+            <br><br>
+            <button type="submit" class="btn btn-success"> Set Up Meeting</button>
+          </form> -->
+          
+        {% if object_list%} 
+        <h6> Recent project uploads and status </h6><br>
+        {% else %}
+        <h6> No project uplaods yet  </h6>
+        {% endif  %}
+
+        {% for i in object_list %}
+          <span>
+            <p> 
+              <a href="{% url 'project_upload_detail_supervisor' i.pk %}">{{i.title}}</a> 
+
+              {% if i.status == 'declined' %}
+              <small>( <img height="10px" src="{% static 'img/declined1.svg' %}"> {{i.status}} )</small> 
+              {% endif %}
+
+              {% if i.status == 'pending' %}
+              <small>(<img height="10px" src="{% static 'img/pending.svg' %}"> In progress )</small> 
+              {% endif %}
+
+              {% if i.status == 'approved' %}
+              <small>( <img height="10px" src="{% static 'img/done.svg' %}"> {{i.status}} )</small> 
+              {% endif %}
+
+
+            </p>                        
+          </span>            
+
+          <!-- {% if i.is_updated %}
+            (*_*)
+          {% endif %} -->
+        {% endfor %}
+
+  </div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+{% endblock %}

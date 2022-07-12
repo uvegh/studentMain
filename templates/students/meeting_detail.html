@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+{% load static %}
+{% include 'students/navbar.html' %}
+<style>
+  
+  label {
+  color: black;
+  padding: 8px;
+  background-color: #e7e7e7; color: black;
+}
+
+textarea {
+  width: 100%;
+  height: 150px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  font-size: 16px;
+  resize: none;
+
+}
+</style>
+  
+  
+  <div class="p-4 shadow-4 rounded-3" >
+    <div class="rounded-top border border-1 p-3">             
+      {% for message in messages %}
+      <div class="container-fluid p-0">
+        <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
+          <button onClick="window.location.href=window.location.href" type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="True">&times;</span>
+          </button>
+          {{ message }}
+        </div>
+      </div>
+      {% endfor %}
+      <div class="rounded border p-2">
+      <br>
+      <h3><img height="50px" src="{% static 'img/smartphone.svg' %}" alt="title"> {{ object.title }}</h3> 
+      <h6><img height="50px" src="{% static 'img/event.svg' %}" alt="datetime"> {{object.datetime}}</h6>      
+      <p> <img height="50px" src="{% static 'img/todo.svg' %}" alt="todo">{{ object.detail }} </p>
+      </div>
+       
+        <div class="rounded border border-2 p-1 m-3" style="background-color: rgba(245, 229, 229, 0.808);">
+          {% if object.status == 'done' %}
+          <small> <img height="20px" src="{% static 'img/verified.svg' %}" alt="vverified"> {{ object.status }}</small>
+          {% endif %}
+
+          {% if object.status == 'active' %}
+          <small> <img height="20px" src="{% static 'img/unverified.svg' %}" alt="vverified"> {{ object.status }}</small>
+          {% endif %}
+
+          {% if object.status == 'closed' %}
+          <small> <img height="20px" src="{% static 'img/declined.svg' %}" alt="vverified"> {{ object.status }}</small>
+          {% endif %}
+                
+        <p> Supervisor: {{ project.supervisor }}</p>        
+        </div>
+        
+        <!-- <p> Supervisor: {{ project.supervisor }}</p>
+        <p> Student: {{ project.student }}</p>
+         -->
+    </div>
+  </div>
+  
+  
+    <div class="rounded-top border border-1 p-3" >
+      
+      
+        {% for comment in comments %}                
+      <div class="rounded border border-1 p-2 m-3" style="background-color: rgb(255, 255, 255);">
+      <!--       
+      {% if comment.user.is_student %}
+        <b style="color: green;">{{ comment.user }}:</b>  
+      {% endif  %}        
+      
+      {% if comment.user.is_supervisor %}
+      <b style="color: rgb(34, 0, 128);">{{ comment.user }}:</b>  
+      {% endif  %}  -->
+        
+      <small>{{ comment.created_on|timesince }} ago</small>
+
+      
+      <p>{{ comment.comment }}</p>        
+      <hr>
+      
+      {% if comment.verification_status == "verified" %}
+      <p><img height="20px" src="{% static 'img/verified.svg' %}" alt="vverified"> &nbsp; {{ comment.verification_status }} by supervisor </p>
+      {% endif %}
+
+      {% if comment.verification_status == "unverified" %}
+      <p><img height="20px" src="{% static 'img/unverified.svg' %}" alt="vverified"> &nbsp; {{ comment.verification_status }} by supervisor </p>
+      {% endif %}
+      </div>  
+      <br>
+    {% endfor %}
+    
+    <form  class="m-5" method="post" action="{% url 'meeting_detail' object.pk %}">
+      {% csrf_token %}
+      {{ form|crispy }}
+      <button type="submit" class="btn btn-success"> send </button>
+      <a href="" class="btn btn-outline-secondary" role="button">Nevermind</a>
+     
+    </form>
+  </div>
+
+    
+  
+{% endblock %}

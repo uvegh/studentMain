@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">{{ student_name }} Meeting List </h5>                
+    <p>  </p>
+  </div>
+</div>
+
+<br>
+<div class="rounded border border-1 p-3" style="background-color: hsl(0, 0%, 94%);">
+  <div>  
+        <!-- <a href="{% url 'defence_call' %}"> Create Message</a>       -->
+          <br><br>
+          <!-- <form action="{% url 'meeting_create' %}" method="post">
+            {% csrf_token %}
+            <label for="title"> Title </label>
+            <input type="text" name="title" />
+              <br><br>
+            <label for="detail"> Detail </label>
+            <input type="text" name="detail" />
+
+            <br><br>
+            <button type="submit" class="btn btn-success"> Set Up Meeting</button>
+          </form> -->
+
+        <h4> Recent meetings and status</h4> <br>
+
+        {% for i in object_list %}
+          <span>
+            <p> <a href="{% url 'supervisor_meeting_detail' i.pk %}">{{i.title}}</a> <small>( {{i.status}} )</small> </p>                        
+          </span>            
+          <!-- {% if i.is_updated %}
+            (*_*)
+          {% endif %} -->
+        {% endfor %}
+
+  </div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+{% endblock %}

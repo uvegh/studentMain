@@ -1,0 +1,25 @@
+{% if user.is_authenticated %}
+{% if user.is_student %}
+
+<nav class="navbar navbar-light bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">
+        <span class="icon-graduation-cap" data-toggle="tooltip" data-placement="right" title="Student profile"></span>
+        FYP Portal
+      </a>
+      <ul class="nav nav-tabs mb-3">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'view_messages' %}">Message</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'defence_call_list' %}">Defence call</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'meeting_list' %}">Meeting</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+{% endif %}
+{% endif %}
